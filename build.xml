@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="generate.mail" name="BaiLian - OSP - TA">
+	<property environment="env" />
+	<property name="my.framework.dir" value="${basedir}/frame" />
+	<property name="my.test.script.dir" value="${basedir}/scripts" />
+	<property name="my.build.dir" value="${basedir}/classes" />
+	<property name="my.lib.dir" value="${basedir}/lib" />
+	<property name="my.driver.dir" value="${basedir}/drivers" />
+	<property name="my.object.dir" value="${basedir}/objects" />
+	<property name="my.output.dir" value="${basedir}/test-output" />
+	<property name="my.report.dir" value="${basedir}/frame-output/report" />
+	<property name="my.resource.dir" value="${basedir}/resource" />
+<!--	<property file="build.properties" />  -->
+
+	<!--============================================================================= 
+	+	Load the ant tasks, which are used in project								+
+	==============================================================================-->
+	<target name="task.define">
+		<echo message="Initial Ant tasks: testng..." />
+		
+		
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		  <classpath>
+			<pathelement location="${my.lib.dir}/ant-contrib-0.3.jar"/>
+		  </classpath>
+		</taskdef>
+
+		<!--Task definition for TestNG -->
+		<taskdef resource="testngtasks" classpath="${my.lib.dir}/testng-6.9.6.jar" />
+
+		<!--Task definition for xpath-->
+		<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="${my.lib.dir}/xmltask.jar" />
+
+	</target>
+
+	<!--============================================================================= 
+	+	Initialize build environment												+
+	==============================================================================-->
+	<target name="init" depends="task.define">
+		<echo message="Initial build environment..." />
+		<delete dir="${my.build.dir}" />
+		<delete dir="${my.output.dir}" />
+		<mkdir dir="${my.build.dir}" />
+		<mkdir dir="${my.output.dir}" />
+		<mkdir dir="${my.report.dir}" />
+
+		<path id="testng.classpath">
+			<fileset dir="${my.lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${my.driver.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${my.build.dir}" />
+		</path>
+
+	</target>
+
+	<!--============================================================================= 
+	+	build source of testing script												+
+	==============================================================================-->
+	<target name="build.testng" depends="init">
+
+		<echo message="Build source of ${my.framework.dir} and ${my.test.script.dir}" />
+		<javac srcdir="${my.framework.dir}" destdir="${my.build.dir}" classpathref="testng.classpath" debug="on" encoding="UTF-8" />
+		<javac srcdir="${my.object.dir}" destdir="${my.build.dir}" classpathref="testng.classpath" debug="on" encoding="UTF-8" />
+		<javac srcdir="${my.test.script.dir}" destdir="${my.build.dir}" classpathref="testng.classpath" debug="on" encoding="UTF-8" />
+
+	</target>
+
+	<!--============================================================================= 
+	+	Main task to run TestNG test case											+
+	==============================================================================-->
+	<target name="run.testng" depends="build.testng">
+
+		<echo message="Run TestNG script..." />
+		<tstamp>
+			<format property="test.suite.start" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		<testng outputdir="${my.output.dir}" classpathref="testng.classpath" testnames="BaiLian_${external.test.project}_${external.test.browser}">
+			<xmlfileset dir="${basedir}" includes="testng.xml" />
+			<sysproperty key="build_url" value="${env.BUILD_URL}" />
+			<sysproperty key="testing_browser" value="${external.test.browser}" />
+		<!--	<sysproperty key="h5_home" value="${h5.home}" />  -->
+		<!--	<sysproperty key="osp_home" value="${osp.home}" />  -->
+			<sysproperty key="env" value="${external.build.env}" />
+		</testng>
+		<tstamp>
+			<format property="test.suite.finish" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+	</target>
+
+	<!--============================================================================= 
+	+	Read test result after TestNG execution										+
+	==============================================================================-->
+	<target name="read.test.result" depends="run.testng,task.define">
+
+		<copy file="${my.output.dir}/testng-results.xml" tofile="${my.output.dir}/testng-results_GBK.xml" />
+		<replace file="${my.output.dir}/testng-results_GBK.xml">
+			<replacefilter token="UTF-8" value="GB2312" />
+		</replace>
+
+		<xmltask source="${my.output.dir}/testng-results_GBK.xml">
+			<copy path="/testng-results/@skipped" property="test.skipped" />
+			<copy path="/testng-results/@failed" property="test.failed" />
+			<copy path="/testng-results/@passed" property="test.passed" />
+			<copy path="/testng-results/@total" property="test.total" />
+			<copy path="/testng-results/suite/@name" property="test.suite.name" />
+			<copy path="/testng-results/suite/@duration-ms" property="test.suite.duration" />
+		</xmltask>
+		<if>
+			<equals arg1="${test.passed}" arg2="${test.total}" trim="true" casesensitive="false" />
+			<then>
+				<property name="test.result" value="passed" />
+				<property name="test.display.result" value="Passed" />
+			</then>
+			<else>
+				<property name="test.result" value="failed" />
+				<property name="test.display.result" value="Failed" />
+			</else>
+		</if>
+	<!--	<math result="success2all" operand1="${test.passed}" operation="/" operand2="${test.total}" />
+		<math result="success.ratio" operand1="${success2all}" operation="*" operand2="100" />  -->
+		<echo message="BaiLian OSP Integration testing [${test.suite.name}] takes ${test.suite.duration} ms, start at ${test.suite.start} end at ${test.suite.finish}${line.separator}" />
+		<echo message="Result: ${test.display.result} ${line.separator}Success rate: ${success.ratio}% (${test.passed}/${test.total})" />
+		<echo message="Total:${test.total}, Passed:${test.passed}, Failed:${test.failed}, Skipped:${test.skipped}" />
+
+		<property name="test.report" value="${env.BUILD_URL}artifact/test/frame-output/report/index.html" />
+		<tstamp>
+			<format property="test.tag" pattern="yyyy-MM-dd" />
+		</tstamp>
+		<property name="test.report.excel" value="${env.BUILD_URL}/artifact/test/frame-output/report/index.xlsx" />
+
+	</target>
+	
+	<!--============================================================================= 
+	+	Send test result by mail						 							+
+	==============================================================================-->
+	<target name="generate.mail" depends="read.test.result">
+		<echo message="Generate final mail contents ..." />
+		<replace file="mail_template.html" encoding="UTF-8">
+			<replacefilter token="@test.result@" value="${test.result}" />
+			<replacefilter token="@test.display.result@" value="${test.display.result}" />
+			<replacefilter token="@testing.browser@" value="${external.test.browser}" />
+			<replacefilter token="@testing.project@" value="${external.test.project}" />
+			<replacefilter token="@success.ratio@" value="${success.ratio}" />
+			<replacefilter token="@test.suite.start@" value="${test.suite.start}" />
+			<replacefilter token="@test.suite.finish@" value="${test.suite.finish}" />
+			<replacefilter token="@test.suite.duration@" value="${test.suite.duration}" />
+			<replacefilter token="@test.total@" value="${test.total}" />
+			<replacefilter token="@test.skipped@" value="${test.skipped}" />
+			<replacefilter token="@test.passed@" value="${test.passed}" />
+			<replacefilter token="@test.failed@" value="${test.failed}" />
+			<replacefilter token="@sonar.url@" value="${sonar.url}" />
+			<replacefilter token="@test.report@" value="${test.report}" />
+			<replacefilter token="@test.report.excel@" value="${test.report.excel}" />
+			<replacefilter token="@BUILD_JOB_LINK@" value="${build.job.link}" />
+			<replacefilter token="@TA_URL@" value="${env.BUILD_URL}" />
+			<replacefilter token="@TA_JOB_NAME@" value="${env.JOB_NAME}" />
+			<replacefilter token="@TA_JOB_NUMBER@" value="${env.BUILD_NUMBER}" />
+			<replacefilter token="@JOB_URL@" value="${env.JOB_URL}" />
+			<replacefilter token="@changes.content@" value="${changes.content}" />
+			<replacefilter token="@project.type.name@" value="Automated Regression Testing" />
+			
+		</replace>
+		<loadfile property="mail.content" srcfile="mail_template.html" encoding="UTF-8" />
+	</target>
+
+</project>

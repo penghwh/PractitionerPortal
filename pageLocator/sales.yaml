@@ -1,0 +1,5 @@
+#This file is to manage web element locator for "sales" page
+
+test:
+  type:xpath
+  value:".//*[@id='contentTable']/tbody/tr[1]/td[5]"
