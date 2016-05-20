@@ -125,7 +125,7 @@
 		<echo message="Result: ${test.display.result} ${line.separator}Success rate: ${success.ratio}% (${test.passed}/${test.total})" />
 		<echo message="Total:${test.total}, Passed:${test.passed}, Failed:${test.failed}, Skipped:${test.skipped}" />
 
-		<property name="test.report" value="${basedir}\frame-output\report\index.html" />
+		<property name="test.report" value="file:///${basedir}\frame-output\report\index.html" />
 		<tstamp>
 			<format property="test.tag" pattern="yyyy-MM-dd" />
 		</tstamp>
