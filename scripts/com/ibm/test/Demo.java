@@ -56,11 +56,7 @@ public class Demo extends TestBase  {
 		action.sendKeys(By.id("LastName"), "testLast", "Inpurt last name");
 		action.sendKeys(By.id("Company"), "IBM", "Inpurt Company name ");
 		action.selectText(By.id("Mobile_Testing_Role__c"), "Development", "Select Role");
-		
-		
-		
-		
-		
+	
 	}
 
 
