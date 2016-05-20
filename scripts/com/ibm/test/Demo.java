@@ -4,14 +4,14 @@ import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.bailian.ta.action.FrameAssertion;
+//import com.bailian.ta.action.FrameAssertion;
 import com.bailian.ta.base.TestBase;
 import com.bailian.ta.config.FrameConfig;
 import com.bailian.ta.driver.BrowserType;
-import com.ibm.pp.login.LoginPage;
+//import com.ibm.pp.login.LoginPage;
 
 public class Demo extends TestBase  {
-	private LoginPage login;
+//	private LoginPage login;
 	public String userName;
 	public String password;
 	
@@ -26,10 +26,10 @@ public class Demo extends TestBase  {
 	}
 	
 	private void initPage(){
-		login = new LoginPage(action);
+	//	login = new LoginPage(action);
 	}
 
-	@Test
+/*	@Test
 	public void loginTest(){
 		String url = FrameConfig.getInstance().getConfig("URL");
 		action.open(url, "Login web application");
@@ -44,6 +44,22 @@ public class Demo extends TestBase  {
 		String info_text = action.getText(By.xpath(".//*[@id='accountdetails']/p[1]"), "Get name");
 		FrameAssertion.contains(info_text, userName, "Verify name");
 		FrameAssertion.contains(info_text, userName, "Verify name");
+	}*/
+	
+	
+	@Test
+	public void signUpTest(){
+		String url = FrameConfig.getInstance().getConfig("URL");
+		action.open(url, "Login web application");
+		action.sendKeys(By.id("FirstName"), "testFirst", "Inpurt first name");
+		action.sendKeys(By.id("LastName"), "testLast", "Inpurt last name");
+		action.sendKeys(By.id("Company"), "IBM", "Inpurt Company name ");
+		action.selectText(By.id("Mobile_Testing_Role__c"), "Development", "Select Role");
+		
+		
+		
+		
+		
 	}
 
 
