@@ -43,6 +43,7 @@ public class Demo extends TestBase  {
 		action.click(By.xpath("//a[contains(text(),'Information')]"), "Click on 'My information' link");
 		String info_text = action.getText(By.xpath(".//*[@id='accountdetails']/p[1]"), "Get name");
 		FrameAssertion.contains(info_text, userName, "Verify name");
+		FrameAssertion.contains(info_text, userName, "Verify name");
 	}
 
 
