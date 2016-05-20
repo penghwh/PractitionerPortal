@@ -52,11 +52,11 @@ public class Demo extends TestBase  {
 		
 		String url = FrameConfig.getInstance().getConfig("URL");
 		action.open(url, "Login web application");
+		action.selectText(By.id("Mobile_Testing_Role__c"), "Development", "Select Role");
 		action.sendKeys(By.id("FirstName"), "testFirst", "Inpurt first name");
 		action.sendKeys(By.id("LastName"), "testLast", "Inpurt last name");
 		action.sendKeys(By.id("Company"), "IBM", "Inpurt Company name ");
-		action.selectText(By.id("Mobile_Testing_Role__c"), "Development", "Select Role");
-	
+
 	}
 
 
