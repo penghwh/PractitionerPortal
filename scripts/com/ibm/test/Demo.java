@@ -49,6 +49,7 @@ public class Demo extends TestBase  {
 	
 	@Test
 	public void signUpTest(){
+		
 		String url = FrameConfig.getInstance().getConfig("URL");
 		action.open(url, "Login web application");
 		action.sendKeys(By.id("FirstName"), "testFirst", "Inpurt first name");
