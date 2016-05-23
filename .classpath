@@ -47,5 +47,8 @@
 	<classpathentry kind="lib" path="lib/api/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="lib" path="lib/classes14.jar"/>
 	<classpathentry kind="lib" path="lib/jyaml-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/ant-contrib.jar"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/xmltask.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

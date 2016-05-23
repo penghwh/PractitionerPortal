@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="generate.mail" name="BaiLian - OSP - TA">
+<project basedir="." default="generate.mail" name="Practitioner Portal">
 	<property environment="env" />
 	<property name="my.framework.dir" value="${basedir}/frame" />
 	<property name="my.test.script.dir" value="${basedir}/scripts" />
@@ -17,13 +17,13 @@
 	==============================================================================-->
 	<target name="task.define">
 		<echo message="${basedir}_Initial Ant tasks: testng..." />
-
 		
 		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 		  <classpath>
-			<pathelement location="${my.lib.dir}/ant-contrib-0.3.jar"/>
+			<pathelement location="${my.lib.dir}/ant.jar"/>
+			<pathelement location="${my.lib.dir}/ant-contrib.jar"/>
 		  </classpath>
-		</taskdef>
+		</taskdef> 
 
 		<!--Task definition for TestNG -->
 		<taskdef resource="testngtasks" classpath="${my.lib.dir}/testng-6.9.6.jar" />
@@ -119,8 +119,8 @@
 				<property name="test.display.result" value="Failed" />
 			</else>
 		</if>
-	<!--	<math result="success2all" operand1="${test.passed}" operation="/" operand2="${test.total}" />
-		<math result="success.ratio" operand1="${success2all}" operation="*" operand2="100" />  -->
+		<math result="success2all" operand1="${test.passed}" operation="/" operand2="${test.total}" />
+		<math result="success.ratio" operand1="${success2all}" operation="*" operand2="100" />
 		<echo message="BaiLian OSP Integration testing [${test.suite.name}] takes ${test.suite.duration} ms, start at ${test.suite.start} end at ${test.suite.finish}${line.separator}" />
 		<echo message="Result: ${test.display.result} ${line.separator}Success rate: ${success.ratio}% (${test.passed}/${test.total})" />
 		<echo message="Total:${test.total}, Passed:${test.passed}, Failed:${test.failed}, Skipped:${test.skipped}" />

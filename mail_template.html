@@ -45,39 +45,27 @@
 	<body>
 		<div id="header">Project [<b>@testing.project@</b>] - @project.type.name@ - @test.display.result@</div>
 		<div id="testinfo">
-			<table id="infoTable">
+			<table id="infoTable" border="1">
 				<tr id="infoTitle" class="tc_@test.result@">
-					<td colspan="3">Test Result Overview - @testing.browser@ - Pass rate: @success.ratio@%</td>
+					<td colspan="3" height="20">Test Result Overview - @testing.browser@ - Pass rate: @success.ratio@%</td>
 				</tr>
-				<tr>
-					<td>Start Time: @test.suite.start@</td>
+				<tr bgcolor="#EAEAEA">
+					<td height="20">Start Time: @test.suite.start@</td>
 					<td>End Time: @test.suite.finish@</td>
-					<td>Test Druation: @test.suite.duration@ms</td>
+					<td>Test Duration: @test.suite.duration@ms</td>
 				</tr>
-				<tr>
-					<td>Total/skipped: @test.total@/@test.skipped@</td>
+				<tr bgcolor="#EAEAEA">
+					<td height="20">Total/skipped: @test.total@/@test.skipped@</td>
 					<td>Passed: @test.passed@</td>
 					<td>Failed: @test.failed@</td>
 				</tr>
-				<tr>
-				<!--		<td colspan="3">静态代码检查: <a href="@sonar.url@">@sonar.url@</a></td> -->
-						<td colspan="3">--------------------------------------------------------</td>
-				</tr>
-				<tr>
-						<td colspan="3">Test Report: <a href="@test.report@">@test.report@</a></td>
-				</tr>
-				<tr>
-				<!--		<td colspan="3">测试报告(Excel): <a href="@test.report.excel@">@test.report.excel@</a></td>  -->
-						<td colspan="3">---------------------------------------------------------</td>
-				</tr>
-				<tr>
-				<!--		<td colspan="3">Jenkins任务: 编译部署：@BUILD_JOB_LINK@， 自动化测试：<a href="@TA_URL@">@TA_JOB_NAME@ - Build # @TA_JOB_NUMBER@</a></td>-->
+				<tr bgcolor="#EAEAEA">
+						<td colspan="3" height="60">Test Report: <a href="@test.report@">@test.report@</a></td>
 				</tr>
 			</table>
 			</br>
-		<!--	<img src="@JOB_URL@/testngreports/graph" />-->
+		<!--	<img src="@JOB_URL@/testngreports/graph" />  -->
 		</div>
-		<!--<div id="changesDiv"><b>Changes:</br>@changes.content@  -->
 		</div>
 	</body>
 </html>
