@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 import com.bailian.ta.action.FrameAssertion;
 import com.bailian.ta.base.TestBase;
-import com.bailian.ta.config.FrameConfig;
+//import com.bailian.ta.config.FrameConfig;
 import com.bailian.ta.driver.BrowserType;
 import com.ibm.pp.login.LoginPage;
 
@@ -51,12 +51,18 @@ public class Demo extends TestBase  {
 	@Test
 	public void signUpTest(){
 		
-		String url = FrameConfig.getInstance().getConfig("URL");
-		action.open(url, "Login web application");
-		action.selectText(By.id("Mobile_Testing_Role__c"), "Development", "Select Role");
-		action.sendKeys(By.id("FirstName"), "testFirst", "Input first name");
-		action.sendKeys(By.id("LastName"), "testLast", "Input last name");
-		action.sendKeys(By.id("Company"), "IBM", "Input Company name ");
+	//	String url = FrameConfig.getInstance().getConfig("URL");
+		action.open("https://w3-03.sso.ibm.com/services/practitionerportal/?section=search", "Login web application");
+
+		action.sendKeys(By.id("Intranet_ID"), "penghwh@cn.ibm.com", "input email");
+		action.sendKeys(By.id("password"), " ", "input email"); 
+		action.click(By.xpath(".//*[@id='loginform']//input[@value='Sign in']"), "Sign in");
+		
+		action.sendKeys(By.xpath(".//section[@id='search']//form[@id='searchformitem']/input"), "testFirst", "Input first name");
+
+
+		
+		
 
 	}
 
