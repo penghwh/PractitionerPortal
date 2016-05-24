@@ -31,7 +31,8 @@ public class Demo extends TestBase  {
 
 	@Test
 	public void loginTest(){
-		String url = FrameConfig.getInstance().getConfig("URL");
+		//String url = FrameConfig.getInstance().getConfig("URL");
+		String url = "http://nxc.co.il/demoaut/index.php";
 		action.open(url, "Login web application");
 		login.doLogin(userName, password);
 		String wlc_text = action.getText(By.xpath(".//*[@id='welcome']/h3[1]"), "Get Welcome message");
